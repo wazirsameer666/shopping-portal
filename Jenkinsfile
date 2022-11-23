@@ -1,41 +1,39 @@
-pipeline {
-  agent any
-  stages {
-    stage('compile-app') {
-      steps {
-        echo 'this is the compile job'
-        sh 'npm install'
-      }
-    }
+pipeline{
 
-    stage('test-app') {
-      steps {
-        echo 'this is the test job'
-        sh 'npm test'
-      }
-    }
+    agent any
 
-    stage('package-app') {
-      steps {
-        echo 'this is the package job'
-        sh 'npm run package'
-      }
+// uncomment the following lines by removing /* and */ to enable
+    tools{
+       nodejs 'nodejs' 
     }
+    
 
-    stage('archive-app') {
-      steps {
-        archiveArtifacts '**/distribution/*.zip'
-      }
+    stages{
+        stage('build-the-app'){
+            steps{
+                echo 'this is the build job'
+                sh 'npm install'
+            }
+        }
+        stage('test-the-app'){
+            steps{
+                echo 'this is the test job'
+                sh 'npm test'
+            }
+        }
+        stage('package-the-app'){
+            steps{
+                echo 'this is the package job'
+                sh 'npm run package'
+            }
+        }
     }
-
-  }
-  tools {
-    nodejs 'nodejs'
-  }
-  post {
-    always {
-      echo 'Hey, this is my first pipeline as code...'
+    
+    post{
+        always{
+            echo 'this is mt first pipeline as code :)'
+        }
+        
     }
-
-  }
+    
 }
